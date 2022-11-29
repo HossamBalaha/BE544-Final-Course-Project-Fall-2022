@@ -1,0 +1,12 @@
+node_modules
+static/Assets
+static/Assets/*
+flask_session/*
+Sources
+*.svs
+.idea
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+package-lock.json

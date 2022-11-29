@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="author" content="Hossam Magdy Balaha">
+  <title>Hossam Magdy Balaha | BE544 Final Project</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+        integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.7/sweetalert2.min.css"
+        integrity="sha512-NvuRGlPf6cHpxQqBGnPe7fPoACpyrjhlSNeXVUY7BZAj1nNhuNpRBq3osC4yr2vswUEuHq2HtCsY2vfLNCndYA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.1/viewer.min.css"
+        integrity="sha512-XHhuZDcgyu28Fsd75blrhZKbqqWCXaUCOuy2McB4doeSDu34BgydakOK71TH/QEhr0nhiieBNhF8yWS8thOGUg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/jquery-ui.min.css"
+        integrity="sha512-ELV+xyi8IhEApPS/pSj66+Jiw+sOT1Mqkzlh8ExXihe4zfqbWkxPRi8wptXIO9g73FSlhmquFlUOuMSoXz5IRw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/themes/base/theme.min.css"
+        integrity="sha512-hbs/7O+vqWZS49DulqH1n2lVtu63t3c3MTAn0oYMINS5aT8eIAbJGDXgLt6IxDHcWyzVTgf9XyzZ9iWyVQ7mCQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.1.1/css/hover-min.css"
+        integrity="sha512-SJw7jzjMYJhsEnN/BuxTWXkezA2cRanuB8TdCNMXFJjxG9ZGSKOX5P3j03H6kdMxalKHZ7vlBMB4CagFP/de0A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.1.1/css/hover.css"
+        integrity="sha512-O0OajC2ZbewIBOO1RxRSm/kvJ0hn19ACNJXfBH0HflppYK9QCq9v/wfNdcKNs/Dh8IXFXc1URFame5IJVxLrWA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"/>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/dataTables.bootstrap5.min.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+<div id="loading-blocker"
+     style="position: fixed; left:0; right:0; width:100%; height: 100% !important; background-color: white; opacity: 0.85; z-index: 9999 !important;">
+  <div role="status" style="position: absolute; top: 50%; left: 50%; !important;">
+    <div class="spinner-border text-center p-0 m-0 mx-4">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-center p-0 m-0">
+      Please Wait...
+    </p>
+  </div>
+</div>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{{ url_for('landing') }}">
+      <img src="{{ url_for('static', filename='images/logo.png') }}"
+           width="50" height="50" class="rounded-circle shadow bg-white shadow-lg"
+           alt="HMB Logo">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{{ url_for('landing') }}">
+            <i class="fas fa-home"></i>
+            Home
+          </a>
+        </li>
+
+        {% if (session.get("username") and session.get("is_authenticated")) %}
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button"
+               data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fa fa-tools"></i>
+              Tools
+            </a>
+            <ul class="dropdown-menu">
+              <li>
+                <a class="dropdown-item" href="{{ url_for('viewer') }}">
+                  <i class="fa fa-images"></i> Datasets
+                </a>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('wsi') }}">
+                  <i class="fa fa-image"></i> Whole Slide Image Handler
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('dzi') }}">
+                  <i class="fa fa-image"></i> Deep Zoom Image Handler
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('classification') }}">
+                  <i class="fa fa-sliders"></i> Image Classification
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('classificationHistory') }}">
+                  <i class="fa fa-wand-magic-sparkles"></i> Image Classification History
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('classificationInference') }}">
+                  <i class="fa fa-clock-rotate-left"></i> Image Classification Inference
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('segmentation') }}">
+                  <i class="fa fa-crop"></i> Segmentation
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('segmentationHistory') }}">
+                  <i class="fa fa-crop"></i> Segmentation History
+                </a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="{{ url_for('augmentation') }}">
+                  <i class="fa fa-copy"></i> Live Image Augmentation
+                </a>
+              </li>
+            </ul>
+          </li>
+        {% endif %}
+      </ul>
+
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link font-weight-bold fs-4 m-0 p-0" aria-current="page" target="_blank"
+             href="https://hossambalaha.github.io/">
+            Hossam Magdy Balaha
+          </a>
+          <p class="text-center m-0 p-0 text-muted">
+            BE544 Final Project
+          </p>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        {% if (session.get("username") and session.get("is_authenticated")) %}
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" href="{{ url_for('logout') }}">
+              Logout <i class="fa fa-sign-out"></i>
+            </a>
+          </li>
+        {% else: %}
+          <li class="nav-item">
+            <a class="nav-link" aria-current="page" title="Login to Access the Project" href="{{ url_for('login') }}">
+              Login <i class="fa fa-sign-in"></i>
+            </a>
+          </li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+{% block body %}{% endblock %}
+<script>
+  const CSRF_TOKEN = '{{csrf_token()}}';
+  const URL_FOR_DZI = '{{url_for('static', filename='Assets/DZI Datasets/', _external=True)}}';
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/js/all.min.js"
+        integrity="sha512-naukR7I+Nk6gp7p5TMA4ycgfxaZBJ7MO5iC3Fp6ySQyKFHOGfpkSZkYVWV5R7u7cfAicxanwYQ5D1e17EfJcMA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.6.7/sweetalert2.min.js"
+        integrity="sha512-jWnZswpC+en54H2EgAsmbQ6l+71tiRawlnmkw31sthq4EGzLKPXG3MQAGIUgWcw8jumkjPNHKHHS5odj+lHudw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/viewerjs/1.11.1/viewer.min.js"
+        integrity="sha512-UzpQxIWgLbHvbVd4+8fcRWqFLi1pQ6qO6yXm+Hiig76VhnhW/gvfvnacdPanleB2ak+VwiI5BUqrPovGDPsKWQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+        integrity="sha512-57oZ/vW8ANMjR/KQ6Be9v/+/h6bq9/l3f0Oc7vn6qMqyhvPd1cvKBRWWpzu0QoneImqr2SkmO4MSqU+RpHom3Q=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"/>
+<script src="https://cdn.datatables.net/1.13.1/js/dataTables.bootstrap5.min.js"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/openseadragon.min.js"
+        integrity="sha512-uZWCk71Y8d7X/dnBNU9sISZQv78vDTglLF8Uaga0AimD7xmjJhFoa67VIcIySAoTHqxIt/0ly9l5ft9MUkynQA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+  $(document).ready(function () {
+    let loadingBlocker = $("#loading-blocker")
+    loadingBlocker.hide();
+  });
+</script>
+{% block script %}{% endblock %}
+</body>
+</html>

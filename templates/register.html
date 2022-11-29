@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12 col-md-9 col-lg-6 mx-auto mt-5">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Create a New Account
+            </h1>
+            <hr class="my-4 py-0">
+
+            {% include '__errors.html' %}
+
+            <form action="{{ url_for('register') }}" method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+              <div class="mb-2">
+                <label for="username" class="form-label">
+                  Username
+                </label>
+                <input type="text" class="form-control" id="username" name="username" autofocus=""
+                       value="{{ registerForm.username }}" placeholder="Enter your username">
+              </div>
+              <div class="mb-2">
+                <label for="password" class="form-label">
+                  Password
+                </label>
+                <input type="password" class="form-control" id="password" name="password" autofocus=""
+                       placeholder="Enter your password">
+              </div>
+              <div class="mb-2">
+                <label for="confirm" class="form-label">
+                  Retype Password
+                </label>
+                <input type="password" class="form-control" id="confirm" name="confirm" autofocus=""
+                       placeholder="Enter your password">
+              </div>
+              <div class="text-center mb-1">
+                <button type="submit" class="btn btn-success px-3 rounded text-white">
+                  Register
+                </button>
+              </div>
+            </form>
+
+            <div class="text-center">
+              Having an account?
+              <a href="{{ url_for('login') }}" class="">
+                Login
+              </a>
+            </div>
+
+            <div class="text-center">
+              <a href="{{ url_for('landing') }}" class="px-3 rounded">
+                Return to Landing
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/register.js') }}"></script>
+{% endblock %}

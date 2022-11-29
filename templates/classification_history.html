@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Image Classification History
+              <i class="fa fa-clock-rotate-left"></i>
+            </h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Image Classification History</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div id="clsHist">
+              <div class="text-end">
+                <button class="btn btn-sm btn-secondary" id="clsHist-refresh">
+                  Refresh <i class="fa fa-sync"></i>
+                </button>
+              </div>
+              <div class="text-end w-100" id="clsHistCountFiles">
+                <span class="text-white w-auto bg-secondary badge">There are 0 files in this folder.</span>
+              </div>
+              <div class="border p-1 rounded my-2">
+                <table class="table table-hover table-bordered" style="width:100%" id="table-clsHist">
+                  <thead>
+                  <tr>
+                    <th class="text-center font-weight-bold align-middle">No.</th>
+                    <th class="text-center font-weight-bold align-middle" style="width: 25%;">Title</th>
+                    <th class="text-center font-weight-bold align-middle">Status</th>
+                    <th class="text-center font-weight-bold align-middle">Created At</th>
+                    <th class="text-center font-weight-bold align-middle">Updated At</th>
+                    <th class="text-center font-weight-bold align-middle">Initial Configurations</th>
+                    <th class="text-center font-weight-bold align-middle">Post Configurations</th>
+                    <th class="text-center font-weight-bold align-middle">History</th>
+                    <th class="text-center font-weight-bold align-middle">History Plot</th>
+                    <th class="text-center font-weight-bold align-middle">Evaluations</th>
+                    <th class="text-center font-weight-bold align-middle">Options</th>
+                  </tr>
+                  </thead>
+                  <tbody id="clsHist-body">
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-sm btn-secondary" id="loadMoreClsHistItems">Load More</button>
+              </div>
+            </div>
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/classification_history.js') }}"></script>
+{% endblock %}

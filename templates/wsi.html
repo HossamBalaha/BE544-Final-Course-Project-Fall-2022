@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Whole Slide Image (WSI) Handler
+              <i class="fa fa-image"></i>
+            </h1>
+            <p class="text-muted small text-center">
+              There are <span class="badge bg-primary">{{ queueCount }}</span>
+              remaining tasks in the queue currently.
+            </p>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Whole Slide Image (WSI) Handler</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div class="alert alert-dismissible alert-info">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              (1) The files required to be uploaded must be in the <b>SVS</b> format.
+              <br>
+              (2) Once the <b class="badge bg-primary">Generate DZI
+              <i class="fa fa-person-walking-arrow-loop-left"></i></b> process
+              is submitted for a specific file, it will take a while to complete.
+              The process may take long time to complete.
+              You can check the progress of the process in the
+              <a href="{{ url_for('dzi') }}"><b>Deep Zoom Image (DZI) Handler</b></a>
+              page.
+            </div>
+
+            <div id="wsi">
+              <div class="text-end">
+                <button class="btn btn-sm btn-secondary" id="wsi-refresh">
+                  Refresh <i class="fa fa-sync"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" id="wsi-upload">
+                  Upload <i class="fa fa-upload"></i>
+                </button>
+              </div>
+              <div class="text-end w-100" id="wsiCountFiles">
+                <span class="text-white w-auto bg-secondary badge">There are 0 files in this folder.</span>
+              </div>
+              <div class="border p-1 rounded my-2">
+                <table class="table table-hover table-bordered" style="width:100%" id="table-wsi">
+                  <thead>
+                  <tr>
+                    <th class="text-center font-weight-bold align-middle">No.</th>
+                    <th class="text-center font-weight-bold align-middle" style="width: 25%;">Name</th>
+                    <th class="text-center font-weight-bold align-middle">Size</th>
+                    <th class="text-center font-weight-bold align-middle">Modified At</th>
+                    <th class="text-center font-weight-bold align-middle">Created At</th>
+                    <th class="text-center font-weight-bold align-middle">Accessed At</th>
+                    <th class="text-center font-weight-bold align-middle">Options</th>
+                  </tr>
+                  </thead>
+                  <tbody id="wsi-body">
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="text-center">
+                <button class="btn btn-sm btn-secondary" id="loadMoreWSIItems">Load More</button>
+              </div>
+            </div>
+
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/openseadragon.min.js"
+          integrity="sha512-uZWCk71Y8d7X/dnBNU9sISZQv78vDTglLF8Uaga0AimD7xmjJhFoa67VIcIySAoTHqxIt/0ly9l5ft9MUkynQA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  {#  <script src="{{ url_for('static', filename='js/minified/wsi.js') }}"></script>#}
+  <script src="{{ url_for('static', filename='js/wsi.js') }}"></script>
+{% endblock %}

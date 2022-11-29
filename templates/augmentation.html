@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Live Image Augmentation
+              <i class="fa fa-sliders"></i>
+            </h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Live Image Augmentation</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div class="card rounded shadow">
+              <div class="card-body">
+                <p class="text-center font-weight-bold fs-5">
+                  Live Image Augmentation
+                </p>
+                <hr width="25%" align="middle" class="mx-auto text-center my-0 py-0">
+
+                <div class="alert alert-primary d-none" id="notes">
+                  <p class="font-weight-bold">
+                    Selected Configurations for <span id="notes-span">...</span>
+                  </p>
+                  <ul id="notes-ul" class="m-0"></ul>
+                </div>
+
+                <div class="row mt-2">
+                  <div class="col-12 col-md-6">
+                    <a href="#" id="select-image-btn">
+                      <img src="https://via.placeholder.com/480?text=Press to Select Image!"
+                           class="shadow shadow-lg img-thumbnail" id="select-image"
+                           alt="Image Placeholder!" width="100%">
+                    </a>
+                  </div>
+                  <div class="col-12 col-md-6">
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Rotation Value
+                        <span id="aug-rotation-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-rotation-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Zoom Value
+                        <span id="aug-zoom-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-zoom-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Width Shift Value
+                        <span id="aug-width-shift-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-width-shift-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Height Shift Value
+                        <span id="aug-height-shift-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-height-shift-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Shear Value
+                        <span id="aug-shear-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-shear-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto mt-1">
+                        Horizontal Flip Value
+                        <span id="aug-horizontal-flip-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col">
+                        <select class="form-select form-select-sm py-1" id="aug-horizontal-flip">
+                          <option value="0">No</option>
+                          <option value="1">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto mt-1">
+                        Vertical Flip Value
+                        <span id="aug-vertical-flip-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col">
+                        <select class="form-select form-select-sm py-1" id="aug-vertical-flip">
+                          <option value="0">No</option>
+                          <option value="1">Yes</option>
+                        </select>
+                      </div>
+                    </div>
+
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Brightness Value
+                        <span id="aug-brightness-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-brightness-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Saturation Value
+                        <span id="aug-saturation-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-saturation-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto">
+                        Hue Value
+                        <span id="aug-hue-slider-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col mt-1">
+                        <div id="aug-hue-slider"></div>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto mt-1">
+                        Specific or Random
+                        <span id="aug-specific-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col">
+                        <select class="form-select form-select-sm py-1" id="aug-specific">
+                          <option value="0">Specific</option>
+                          <option value="1">Random</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="font-weight-bold row mb-2">
+                      <div class="col-auto mt-1">
+                        Single or Multiple
+                        <span id="aug-single-span" class="badge bg-success"></span>
+                      </div>
+                      <div class="col">
+                        <select class="form-select form-select-sm py-1" id="aug-single">
+                          <option value="0">Single</option>
+                          <option value="1">Multiple</option>
+                        </select>
+                      </div>
+                    </div>
+
+                    <div class="text-center mt-2">
+                      <button class="btn btn-primary bg-primary"
+                              id="aug-apply-btn"
+                              type="button" title="Apply Live Image Augmentation">
+                        Apply
+                        <i class="fa fa-spinner fa-spin d-none mx-1"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/augmentation.js') }}"></script>
+{% endblock %}

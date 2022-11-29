@@ -1,0 +1,221 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <div class="text-center" id="logoImgContainer">
+              <img src="{{ url_for('static', filename='images/logo.png') }}"
+                   width="150" height="150" class="rounded-circle shadow"
+                   alt="HMB Logo">
+            </div>
+
+            {% if (session.get("username") and session.get("is_authenticated")) %}
+              <h1 class="card-title text-center fs-1 font-weight-bold">
+                Dashboard
+              </h1>
+              <p class="text-center">
+                Welcome back, <b>{{ session.get("username") }}</b>!
+              </p>
+            {% endif %}
+
+            {% if not((session.get("username") and session.get("is_authenticated"))) %}
+              <div class="text-center">
+                <a href="{{ url_for('login') }}" class="btn btn-primary text-white">
+                  Login
+                </a>
+                <a href="{{ url_for('register') }}" class="btn btn-secondary text-white">
+                  Register
+                </a>
+              </div>
+            {% endif %}
+
+            {% if (session.get("username") and session.get("is_authenticated")) %}
+              <div class="card shadow shadow-lg mb-3">
+                <div class="card-body">
+                  <div class="number-top-left">
+                    <span class="badge bg-dark rounded-circle fs-5 shadow-lg border-dark border">1</span>
+                  </div>
+                  <p class="text-center font-weight-bold h5">
+                    Data Acquisition and Entry
+                  </p>
+                  <div class="row mx-auto">
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('viewer') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-images fa-3x text-primary"></i>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">Datasets</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('wsi') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-image fa-3x text-primary"></i>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">Whole Slide Image Handler</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card shadow shadow-lg mb-3">
+                <div class="card-body">
+                  <div class="number-top-left">
+                    <span class="badge bg-dark rounded-circle fs-5 shadow-lg border-dark border">2</span>
+                  </div>
+                  <p class="text-center font-weight-bold h5">
+                    Data Preprocessing
+                  </p>
+                  <div class="row mx-auto">
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('augmentation') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-copy fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">Live Image Augmentation</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="card shadow shadow-lg mb-3">
+                <div class="card-body">
+                  <div class="number-top-left">
+                    <span class="badge bg-dark rounded-circle fs-5 shadow-lg border-dark border">3</span>
+                  </div>
+                  <p class="text-center font-weight-bold h5">
+                    Data Processing
+                  </p>
+                  <div class="row mx-auto">
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('classification') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-sliders fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">Image Classification</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('segmentation') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-crop fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">Segmentation</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="card shadow shadow-lg mb-3">
+                <div class="card-body">
+                  <div class="number-top-left">
+                    <span class="badge bg-dark rounded-circle fs-5 shadow-lg border-dark border">4</span>
+                  </div>
+                  <p class="text-center font-weight-bold h5">
+                    Data Interpretation and Visualization
+                  </p>
+                  <div class="row mx-auto">
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('classificationHistory') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-clock-rotate-left fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">
+                              Image Classification History
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('classificationInference') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-wand-magic-sparkles fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">
+                              Image Classification Inference
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('segmentationHistory') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-clock-rotate-left fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">
+                              Segmentation History
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+
+                    <div class="col-12 col-md-6 my-2 hvr-buzz mx-auto">
+                      <a href="{{ url_for('dzi') }}" class="a-no-link">
+                        <div class="card shadow-lg">
+                          <div class="card-body text-center">
+                            <i class="fa fa-image fa-3x text-primary"></i>
+                            <br>
+                            <p class="font-weight-bold text-dark p-0 m-0 mt-1">Deep Zoom Image Handler</p>
+                          </div>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+
+            <hr>
+            <div class="row">
+              <div class="col-12">
+                <p class="card-text text-center">
+                  This course provides both theoretical and practical information about computer vision and AI
+                  techniques
+                  required to process and analyze microscopic images as a part of the evolving transition to
+                  digital
+                  pathology. This evolution will enable the use of AI models in pathology to aid pathologists and
+                  healthcare
+                  professionals in the management and the diagnosis of different diseases.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+{% endblock %}

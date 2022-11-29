@@ -1,0 +1,1 @@
+$(document).ready(function(){let l=$("#loading-blocker");l.hide(),$("#install").click(function(n){l.show()})});

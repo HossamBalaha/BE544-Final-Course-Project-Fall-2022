@@ -1,0 +1,15 @@
+numpy
+pandas
+scipy
+matplotlib
+scikit-learn
+tensorflow-gpu
+pyvips
+opencv-python
+opencv-contrib-python
+mysql-connector
+opencv-python
+opencv-contrib-python
+werkzeug
+flask_session
+flask_wtf

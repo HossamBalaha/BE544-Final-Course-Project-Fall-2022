@@ -1,0 +1,198 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Segmentation
+              <i class="fa fa-crop"></i>
+            </h1>
+            <p class="text-muted small text-center">
+              There are <span class="badge bg-primary">{{ queueCount }}</span>
+              remaining tasks in the queue currently.
+            </p>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Segmentation</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div class="alert alert-dismissible alert-info">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              (1) Once the segmentation process is submitted, it will take a while to complete. You can check the
+              progress in
+              <a href="{{ url_for('segmentationHistory') }}"><b>Segmentation History</b></a> page.
+              <br>
+              (2) The state of the process will be declared as
+              <b>Completed</b> when the process is finished or <b>Failed</b> when the process is failed. The reason
+              of the failure will be reported. If the process is completed, you can preview the results and metrics.
+              <br>
+              (3) The process may take long time to complete if the dataset is large. It also depends on the number
+              of epochs, image shape, and training ratio.
+              <br>
+              (4) The target WSI file must be uploaded first at the
+              <a href="{{ url_for('wsi') }}">Whole Slide Image Handler</a> page.
+              <br>
+              (5) Write the annotations names separated by commas. These annotations must match the annotations
+              in the uploaded and uncompressed QuPath project.
+              <br>
+              (6) The working shape will be considered only if the model is dynamic.
+              For example, if the model is <b>Manual U-NetManual U-Net (Input is 256x256x3)</b>,
+              the working shape will be considered as <b>256,256,3</b>.
+            </div>
+
+            <div class="card rounded shadow">
+              <div class="card-body">
+                <p class="text-center font-weight-bold fs-4">
+                  Weakly Supervised Segmentation using U-Net
+                </p>
+                <hr class="py-0 mt-1 mb-3">
+
+                {% include '__errors.html' %}
+
+                <form action="{{ url_for('segmentation') }}" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <div class="row mb-3">
+                    <label for="newTitle" class="col-md-2 col-form-label">Title</label>
+                    <div class="col-md-10 col-lg-4">
+                      <input type="text" class="form-control" id="newTitle" name="title" value="Testing" required>
+                    </div>
+                    <label for="newWsiFile" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">
+                      Whole Slide Image (WSI) File
+                    </label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="wsiFile" id="newWsiFile" class="form-select" required>
+                        {% for k in wsis.keys() %}
+                          <option value="{{ k }}" {{ "selected" if segmentationForm.k == k }}>
+                            {{ wsis[k] }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newQuPathProject" class="col-md-2 col-form-label">
+                      QuPath Project Folder (Compressed)
+                    </label>
+                    <div class="col-md-10 col-lg-4">
+                      <input class="form-control" type="file" name="qupathProject" id="newQuPathProject" required>
+                      <span class="text-muted">
+                        The project must be compressed in a <b>zip</b> file.
+                      </span>
+                    </div>
+                    <label for="newAnnotations" class="col-md-2 col-form-label">Annotations</label>
+                    <div class="col-md-10 col-lg-4">
+                      <textarea id="newAnnotations" class="form-control" name="annotations" cols="30" rows="2" required
+                                placeholder="Example: Annotations1,Annotations2 (Use Commas Only).">{{ segmentationForm.annotations or "Annotation-A1,Annotation-B1" }}</textarea>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newModel" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Model</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <select name="model" id="newModel" class="form-select" required>
+                        {% for model in models %}
+                          <option value="{{ model }}" {{ "selected" if segmentationForm.model == model }}>
+                            {{ model }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <label for="newActivation" class="col-md-2 col-form-label">Hidden Activation</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="activation" id="newActivation" class="form-select" required>
+                        {% for activation in activations %}
+                          <option
+                              value="{{ activation }}" {{ "selected" if segmentationForm.activation == activation }}>
+                            {{ activation|upper }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newTrainingRatio" class="col-md-2 col-form-label">Train-to-test Ratio</label>
+                    <div class="col-md-10 col-lg-4">
+                      <input type="text" class="form-control" id="newTrainingRatio" name="trainingRatio"
+                             value="0.85" placeholder="Example: 0.5 (From 0.0 to 1.0)" required>
+                    </div>
+                    <label for="newEpochs" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Number of Epochs</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <input type="text" class="form-control" id="newEpochs" name="epochs"
+                             value="{{ segmentationForm.epochs or 25 }}" placeholder="Example: 100" required>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="newScaler" class="col-md-2 col-form-label">Scaler</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="scaler" id="newScaler" class="form-select" required>
+                        {% for scaler in scalers %}
+                          <option value="{{ scaler }}" {{ "selected" if segmentationForm.scaler == scaler }}>
+                            {{ scaler }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <label for="newBatchSize" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Batch Size</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <input type="text" class="form-control" id="newBatchSize" name="batchSize"
+                             value="{{ segmentationForm.batchSize or 8 }}" placeholder="Example: 32" required>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="newShape" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Working Shape</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <input type="text" class="form-control" id="newShape" name="shape"
+                             value={{ segmentationForm.shape or "256,256,3" }}
+                                 placeholder="Example: 256,256,3 (Use Commas Only)" required>
+                    </div>
+                    <label for="newShuffleDataset" class="col-md-2 col-form-label">Shuffle Dataset before Split?</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="shuffle" id="newShuffleDataset" class="form-select" required>
+                        <option value="1" {{ "selected" if segmentationForm.trainable == "1" }}>Yes</option>
+                        <option value="0" {{ "selected" if segmentationForm.trainable == "1" }}>No</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="submit" id="proceedSegmentation" class="btn btn-primary px-4 rounded">
+                      Proceed
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/openseadragon/3.1.0/openseadragon.min.js"
+          integrity="sha512-uZWCk71Y8d7X/dnBNU9sISZQv78vDTglLF8Uaga0AimD7xmjJhFoa67VIcIySAoTHqxIt/0ly9l5ft9MUkynQA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  {#  <script src="{{ url_for('static', filename='js/minified/wsi.js') }}"></script>#}
+  <script src="{{ url_for('static', filename='js/segmentation.js') }}"></script>
+{% endblock %}

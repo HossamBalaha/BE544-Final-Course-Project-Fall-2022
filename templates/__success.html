@@ -1,0 +1,16 @@
+{% with successes = get_flashed_messages(category_filter=["success"]) %}
+  {% if successes %}
+    <div class="alert alert-success alert-dismissible fade show px-3 py-2" role="alert">
+    <p class="text-start p-0 m-0 font-weight-bold">Errors</p>
+      <hr class="p-0 m-0 my-1">
+      <ul class="list-unstyled m-0 p-0">
+        {%- for success in successes %}
+          <li class="">
+            <i class="fa fa-exclamation-circle"></i>
+            {{ success }}
+          </li>
+        {% endfor -%}
+      </ul>
+    </div>
+  {% endif %}
+{% endwith %}

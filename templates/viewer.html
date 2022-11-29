@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Datasets
+              <i class="fa fa-images"></i>
+            </h1>
+
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Datasets</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div class="alert alert-dismissible alert-info">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              If you need to upload a dataset, it should be uploaded as a compressed file.
+              The naming of the dataset folders should be the same as the classes (i.e., categories).
+              For example, if we have a dataset with 3 classes (e.g., A, B, and C),
+              the dataset folders should be named as A, B, and C.
+            </div>
+
+            <div id="browser">
+              <div class="text-end">
+                <button class="btn btn-sm btn-secondary" id="browser-home">
+                  Home <i class="fa fa-home"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" id="browser-refresh">
+                  Refresh <i class="fa fa-sync"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" id="browser-back">
+                  Back <i class="fa fa-arrow-left"></i>
+                </button>
+                <button class="btn btn-sm btn-secondary" id="browser-upload">
+                  Upload <i class="fa fa-upload"></i>
+                </button>
+              </div>
+              <div class="text-end w-100" id="countFiles">
+                <span class="text-white w-auto bg-secondary badge">There are 0 files in this folder.</span>
+              </div>
+              <div class="border p-1 rounded my-2">
+                <table class="table table-hover table-bordered" style="width:100%">
+                  <thead>
+                  <tr>
+                    <th class="text-center font-weight-bold align-middle">No.</th>
+                    <th class="text-center font-weight-bold align-middle">Name</th>
+                    <th class="text-center font-weight-bold align-middle">Type</th>
+                    <th class="text-center font-weight-bold align-middle">Size</th>
+                    <th class="text-center font-weight-bold align-middle">Modified At</th>
+                    <th class="text-center font-weight-bold align-middle">Created At</th>
+                    <th class="text-center font-weight-bold align-middle">Accessed At</th>
+                    <th class="text-center font-weight-bold align-middle">Options</th>
+                  </tr>
+                  </thead>
+                  <tbody id="browser-body">
+                  </tbody>
+                </table>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-sm btn-secondary" id="loadMoreDatasetItems">Load More</button>
+              </div>
+            </div>
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/viewer.js') }}"></script>
+{% endblock %}

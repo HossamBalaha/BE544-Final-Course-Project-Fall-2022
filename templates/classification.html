@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Image Classification
+              <i class="fa fa-sliders"></i>
+            </h1>
+            <p class="text-muted small text-center">
+              There are <span class="badge bg-primary">{{ queueCount }}</span>
+              remaining tasks in the queue currently.
+            </p>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Image Classification</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div class="alert alert-dismissible alert-info">
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+              (1) Once the classification process is submitted, it will take a while to complete.
+              You can check the progress of the process in
+              <a href="{{ url_for('classificationHistory') }}"><b>Image Classification History</b></a> page.
+              <br>
+              (2) The state of the process will be declared as
+              <b>Completed</b> when the process is finished or <b>Failed</b> when the process is failed. The reason
+              of the failure will be reported. If the process is completed, you can preview the results and metrics.
+              <br>
+              (3) The process may take long time to complete if the dataset is large. It also depends on the number of
+              epochs, image shape, and TL training ratio.
+              <br>
+              (4) The output activation and loss functions will be automatically selected based on the
+              number of classes.
+              <br>
+              (5) The target dataset folder must be uploaded first in the
+              <a href="{{ url_for('viewer') }}"><b>Datasets</b></a> page.
+            </div>
+
+            <div class="card rounded shadow">
+              <div class="card-body">
+                <p class="text-center font-weight-bold fs-4">
+                  New Deep Learning Classification Process (Images Only)
+                </p>
+                <hr class="py-0 mt-1 mb-3">
+
+                {% include '__errors.html' %}
+
+                <form action="{{ url_for('classification') }}" method="POST">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                  <div class="row mb-3">
+                    <label for="newTitle" class="col-md-2 col-form-label">Title</label>
+                    <div class="col-md-10 col-lg-4">
+                      <input type="text" class="form-control" id="newTitle" name="title"
+                             value="{{ classificationForm.title or "Testing" }}" required>
+                    </div>
+                    <label for="newModel" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Model</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <select name="model" id="newModel" class="form-select" required>
+                        {% for model in models %}
+                          <option value="{{ model }}" {{ "selected" if classificationForm.model == model }}>
+                            {{ model }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newOptimizer" class="col-md-2 col-form-label">Optimizer</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="optimizer" id="newOptimizer" class="form-select" required>
+                        {% for optimizer in optimizers %}
+                          <option value="{{ optimizer }}" {{ "selected" if classificationForm.optimizer == optimizer }}>
+                            {{ optimizer|upper }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <label for="newShape" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Image Shape</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <input type="text" class="form-control" id="newShape" name="shape"
+                             value="{{ classificationForm.shape or "100,100,3" }}"
+                             placeholder="Example: 224,224,3 (Use Commas Only)" required>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newActivation" class="col-md-2 col-form-label">Hidden Activation</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="activation" id="newActivation" class="form-select" required>
+                        {% for activation in activations %}
+                          <option
+                              value="{{ activation }}" {{ "selected" if classificationForm.activation == activation }}>
+                            {{ activation|upper }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                    <label for="newTrainable" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Is Trainable?</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <select name="trainable" id="newTrainable" class="form-select" required>
+                        <option value="1" {{ "selected" if classificationForm.trainable == "1" }}>Yes</option>
+                        <option value="0" {{ "selected" if classificationForm.trainable == "0" }}>No</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newTLTrainingRatio" class="col-md-2 col-form-label">TL Training Ratio</label>
+                    <div class="col-md-10 col-lg-4">
+                      <input type="text" class="form-control" id="newTLTrainingRatio" name="tlTrainingRatio"
+                             value="{{ classificationForm.tlTrainingRatio or 0 }}"
+                             placeholder="Example: 0.5 (From 0.0 to 1.0)" required>
+                    </div>
+                    <label for="newBatchSize" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Batch Size</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <input type="text" class="form-control" id="newBatchSize" name="batchSize"
+                             value="{{ classificationForm.batchSize or 32 }}" placeholder="Example: 32" required>
+                    </div>
+                  </div>
+                  <div class="row mb-3">
+                    <label for="newTrainingRatio" class="col-md-2 col-form-label">Train-to-test Ratio</label>
+                    <div class="col-md-10 col-lg-4">
+                      <input type="text" class="form-control" id="newTrainingRatio" name="trainingRatio"
+                             value="{{ classificationForm.trainingRatio or 0.8 }}"
+                             placeholder="Example: 0.5 (From 0.0 to 1.0)"
+                             required>
+                    </div>
+                    <label for="newEpochs" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Number of Epochs</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                      <input type="text" class="form-control" id="newEpochs" name="epochs"
+                             value="{{ classificationForm.epochs or 25 }}" placeholder="Example: 100" required>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="newDataset" class="col-md-2 col-form-label">Dataset</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="dataset" id="newDataset" class="form-select" required>
+                        {% for k in datasets.keys() %}
+                          <option value="{{ k }}" {{ "selected" if classificationForm.k == k }}>
+                            {{ datasets[k] }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+
+                    <label for="newClasses" class="col-md-2 mt-md-3 mt-0 mt-lg-0 col-form-label">Categories</label>
+                    <div class="col-md-10 col-lg-4 mt-md-3 mt-0 mt-lg-0">
+                    <textarea id="newClasses" class="form-control" name="classes" cols="30" rows="5" required
+                              placeholder="Example: Benign,Malignant (Use Commas Only). These classes must match the uploaded and uncompressed dataset folders.">{{ classificationForm.classes or "Cats,Dogs" }}</textarea>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <label for="newScaler" class="col-md-2 col-form-label">Scaler</label>
+                    <div class="col-md-10 col-lg-4">
+                      <select name="scaler" id="newScaler" class="form-select" required>
+                        {% for scaler in scalers %}
+                          <option value="{{ scaler }}" {{ "selected" if classificationForm.scaler == scaler }}>
+                            {{ scaler }}
+                          </option>
+                        {% endfor %}
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="submit" id="proceedClassification" class="btn btn-primary px-4 rounded">
+                      Proceed
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/classification.js') }}"></script>
+{% endblock %}

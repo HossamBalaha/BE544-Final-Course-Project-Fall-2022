@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container">
+  <div class="row">
+    <div class="col-12 col-md-9 mx-auto mt-5">
+      <div class="card rounded shadow shadow-lg">
+        <div class="card-body">
+          <h1 class="card-title text-center">
+            Something went wrong!
+          </h1>
+
+          <div class="text-center">
+            <a href="{{url_for('landing')}}" class="px-3 rounded">
+              Return to Landing
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  $(document).ready(function(){$("#loading-blocker").hide()});
+</script>
+{% endblock %}

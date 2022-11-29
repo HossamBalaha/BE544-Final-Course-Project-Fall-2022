@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <div class="container">
+    <div class="row my-5">
+      <div class="col-12 mt-3">
+        <div class="card rounded shadow shadow-lg">
+          <div class="card-body">
+            <h1 class="card-title text-center">
+              Classification Inference
+              <i class="fa fa-wand-magic-sparkles"></i>
+            </h1>
+            <nav aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Classification Inference</li>
+              </ol>
+            </nav>
+            <hr class="py-0">
+
+            <div class="card rounded shadow">
+              <div class="card-body">
+                <p class="text-center font-weight-bold fs-5">
+                  Classification Inference
+                </p>
+                <hr width="25%" align="middle" class="mx-auto text-center my-0 py-0">
+
+                <div class="row mt-2">
+                  <div class="col-12 col-md-6">
+                    <a href="#" id="select-image-btn">
+                      <img src="https://via.placeholder.com/480?text=Press to Select Image!"
+                           class="shadow shadow-lg img-thumbnail" id="select-image"
+                           alt="Image Placeholder!" width="100%">
+                    </a>
+                  </div>
+                  <div class="col-12 col-md-6">
+
+                    <div class="card mt-2 shadow shadow-lg">
+                      <div class="card-body">
+                        <p class="text-center m-0 p-0">
+                          Classification Run
+                        </p>
+                        <hr class="m-0 p-0 my-2">
+                        <div class="mx-auto">
+                          <select class="form-select form-select-sm py-1" id="cls-inf-model">
+                            {% for classificationRecord in classificationsRecords %}
+                              <option value="{{ classificationRecord['store_name'] }}">
+                                {{ classificationRecord['name'] }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        </div>
+                        <div class="text-center mt-2">
+                          <button class="btn btn-primary bg-primary"
+                                  id="cls-inf-apply-btn"
+                                  type="button" title="Apply Classification">
+                            Apply
+                            <i class="fa fa-spinner fa-spin d-none mx-1"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="card mt-2 shadow shadow-lg d-none" id="cls-inf-result">
+                      <div class="card-body">
+                        <p class="text-center m-0 p-0">
+                          Result
+                        </p>
+                        <hr class="m-0 p-0 my-2">
+                        <ul class="m-0">
+                          <li><b>Classification</b>: <span id="cls-inf-result-cls"></span></li>
+                          <li><b>Probability</b>: <span id="cls-inf-result-prob"></span></li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <hr class="my-4 py-0">
+            <h5 class="text-center mt-2 mb-0">
+              Hossam Magdy Balaha
+            </h5>
+            <p class="text-center p-0 m-0">
+              <a href="https://hossambalaha.github.io/" target="_blank">
+                Online CV
+              </a>
+              <br>
+              <span class="small text-muted">All Rights Reserved &copy; 2022</span>
+            </p>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <script src="{{ url_for('static', filename='js/classification_inference.js') }}"></script>
+{% endblock %}
