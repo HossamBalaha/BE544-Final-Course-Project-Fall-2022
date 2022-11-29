@@ -8,14 +8,8 @@ from Database import *
 BASE_FOLDERS_PATH = os.path.join(os.getcwd(), "static", "Assets")
 CLASSIFICATIONS_PATH = os.path.join(BASE_FOLDERS_PATH, "Classifications")
 SEGMENTATIONS_PATH = os.path.join(BASE_FOLDERS_PATH, "Segmentations")
-# SEGMENTATIONS_INFERENCE_PATH = os.path.join(SEGMENTATIONS_PATH, "Inference")
-# SEGMENTATIONS_HISTORY_PATH = os.path.join(SEGMENTATIONS_PATH, "History")
 AUGMENTATIONS_PATH = os.path.join(BASE_FOLDERS_PATH, "Augmentations")
 LIVE_AUGMENTATIONS_PATH = os.path.join(AUGMENTATIONS_PATH, "Live")
-# QUPATH_PATH = os.path.join(BASE_FOLDERS_PATH, "QuPath")
-# QUPATH_COMPRESSED_PATH = os.path.join(QUPATH_PATH, "Compressed")
-# QUPATH_PROJECTS_PATH = os.path.join(QUPATH_PATH, "Projects")
-# QUPATH_TILES_MASKS_PATH = os.path.join(QUPATH_PATH, "Tiles with Masks")
 DATASETS_PATH = os.path.join(BASE_FOLDERS_PATH, "Datasets")
 WSI_PATH = os.path.join(BASE_FOLDERS_PATH, "WSI Datasets")
 DZI_PATH = os.path.join(BASE_FOLDERS_PATH, "DZI Datasets")
@@ -88,30 +82,12 @@ def MakeFolders():
     os.makedirs(BASE_FOLDERS_PATH)
   if (not os.path.exists(CLASSIFICATIONS_PATH)):
     os.makedirs(CLASSIFICATIONS_PATH)
-  # if (not os.path.exists(CLASSIFICATIONS_HISTORY_PATH)):
-  #   os.makedirs(CLASSIFICATIONS_HISTORY_PATH)
-  # if (not os.path.exists(CLASSIFICATIONS_INFERENCE_PATH)):
-  #   os.makedirs(CLASSIFICATIONS_INFERENCE_PATH)
-  # if (not os.path.exists(CLASSIFICATIONS_PICKLES_PATH)):
-  #   os.makedirs(CLASSIFICATIONS_PICKLES_PATH)
   if (not os.path.exists(SEGMENTATIONS_PATH)):
     os.makedirs(SEGMENTATIONS_PATH)
-  # if (not os.path.exists(SEGMENTATIONS_HISTORY_PATH)):
-  #   os.makedirs(SEGMENTATIONS_HISTORY_PATH)
-  # if (not os.path.exists(SEGMENTATIONS_INFERENCE_PATH)):
-  #   os.makedirs(SEGMENTATIONS_INFERENCE_PATH)
   if (not os.path.exists(AUGMENTATIONS_PATH)):
     os.makedirs(AUGMENTATIONS_PATH)
   if (not os.path.exists(LIVE_AUGMENTATIONS_PATH)):
     os.makedirs(LIVE_AUGMENTATIONS_PATH)
-  # if (not os.path.exists(QUPATH_PATH)):
-  #   os.makedirs(QUPATH_PATH)
-  # if (not os.path.exists(QUPATH_COMPRESSED_PATH)):
-  #   os.makedirs(QUPATH_COMPRESSED_PATH)
-  # if (not os.path.exists(QUPATH_PROJECTS_PATH)):
-  #   os.makedirs(QUPATH_PROJECTS_PATH)
-  # if (not os.path.exists(QUPATH_TILES_MASKS_PATH)):
-  #   os.makedirs(QUPATH_TILES_MASKS_PATH)
   if (not os.path.exists(DATASETS_PATH)):
     os.makedirs(DATASETS_PATH)
   if (not os.path.exists(WSI_PATH)):
@@ -173,11 +149,6 @@ def WSI2VipsDZI(wsiPath, dziPath, tileSize=128, overlap=0, exportFormat="png"):
       "--layout", "dz",
     ]
   )
-
-  # cmd = f'"{BASE_PATH}\\vips" dzsave "{wsiPath}" "{dziPath}" --tile-size {tileSize} --overlap {overlap} --suffix .{exportFormat}'
-  # # f'--layout google --depth onetile --centre --background 0 --compression 0'
-  # print(cmd)
-  # os.system(cmd)
 
 
 def GetTrainingHistoryPlot(history, metrics=["loss", "accuracy"]):
@@ -1278,44 +1249,3 @@ def LiveImageAugmentation(
   configs = list(configsDict.items())
 
   return image, whichIsRun, configs
-
-# currentDateTime = datetime.now().strftime("%Y%m%d-%H%M%S")
-# if (dataset == "Cats vs. Dogs (Small)"):
-#   datasetKeyword = "CatsvsDogs (Small)"
-# elif (dataset == "Cats vs. Dogs (Large)"):
-#   datasetKeyword = "CatsvsDogs (Large)"
-# else:
-#   datasetKeyword = dataset
-# workingFolder = os.path.join(CLASSIFICATIONS_HISTORY_PATH, f"{title}-{datasetKeyword}-{currentDateTime}")
-# os.makedirs(workingFolder, exist_ok=True)
-
-# print("X Sample:", X[0], flush=True)
-# print("y Sample:", y[0], flush=True)
-# print("X Type:", type(X), flush=True)
-# print("y Type:", type(y), flush=True)
-# print("X Sample Type:", type(X[0]), flush=True)
-# print("y Sample Type:", type(y[0]), flush=True)
-# print("X.shape:", X.shape, flush=True)
-# print("y.shape:", y.shape, flush=True)
-# print("xTrain.shape:", xTrain.shape, flush=True)
-# print("yTrain.shape:", yTrain.shape, flush=True)
-# print("xVal.shape:", xVal.shape, flush=True)
-# print("yVal.shape:", yVal.shape, flush=True)
-# print("xTest.shape:", xTest.shape, flush=True)
-# print("yTest.shape:", yTest.shape, flush=True)
-
-# if (activation == "relu"):
-#   x = Dense(1024, activation="relu")(x)
-# elif (activation == "selu"):
-#   x = Dense(1024, activation="selu")(x)
-# elif (activation == "elu"):
-#   x = Dense(1024, activation="elu")(x)
-# elif (activation == "exponential"):
-#   x = Dense(1024, activation="exponential")(x)
-# elif (activation == "tanh"):
-#   x = Dense(1024, activation="tanh")(x)
-# elif (activation == "leakyrelu"):
-#   x = Dense(1024, activation="leakyrelu")(x)
-# else:
-#   print("Unsupported activation.", flush=True)
-#   return
